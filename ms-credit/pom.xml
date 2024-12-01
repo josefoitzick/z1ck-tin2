@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.z1ck</groupId>
-	<artifactId>ms-client</artifactId>
+	<artifactId>ms-credit</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ms-client</name>
-	<description>microservicio de client</description>
+	<name>ms-credit</name>
+	<description>microservicio de credito</description>
 	<url/>
 	<licenses>
 		<license/>
