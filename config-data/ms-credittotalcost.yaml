@@ -1,8 +1,8 @@
 server:
-  port: 8091
+  port: 8096
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/clients-db
+    url: jdbc:postgresql://localhost:5432/credittotalcosts-db
     username: postgres
     password: 1234
 eureka:
