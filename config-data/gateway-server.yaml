@@ -23,15 +23,44 @@ spring:
             allowedMethods: "*"
             allowedHeaders: "*"
       routes:
-        - id: ms-orders
-          uri: lb://ms-orders:8090
+        # Ruta para ms-client
+        - id: ms-client
+          uri: lb://ms-client
           predicates:
-            - Path=/orders/**
-        - id: ms-products
-          uri: lb://ms-products:8091
+            - Path=/api/v1/clients/**
+
+        # Ruta para ms-credit
+        - id: ms-credit
+          uri: lb://ms-credit
           predicates:
-            - Path=/products/**
-        - id: credit-simulation
+            - Path=/api/v1/credit/**
+
+        # Ruta para ms-creditevaluation
+        - id: ms-creditevaluation
+          uri: lb://ms-creditevaluation
+          predicates:
+            - Path=/api/v1/credit-evaluations/**
+
+        # Ruta para ms-creditrequest
+        - id: ms-creditrequest
+          uri: lb://ms-creditrequest
+          predicates:
+            - Path=/api/v1/credit-requests/**
+
+        # Ruta para ms-creditsimulation
+        - id: ms-creditsimulation
           uri: lb://ms-creditsimulation
           predicates:
-            - Path=/api/v1/simulation/**
+            - Path=/api/v1/credit-simulation/**
+
+        # Ruta para ms-credittotalcost
+        - id: ms-credittotalcost
+          uri: lb://ms-credittotalcost
+          predicates:
+            - Path=/api/v1/credit-total-cost/**
+
+        # Ruta para ms-credittracking
+        - id: ms-credittracking
+          uri: lb://ms-credittracking
+          predicates:
+            - Path=/api/v1/credit-tracking/**
