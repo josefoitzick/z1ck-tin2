@@ -26,12 +26,12 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: postgres-config-map
-                  key: DB_HOST_CLIENT
+                  key: DB_HOST_CLIENTS
             - name: DB_PORT
               valueFrom:
                 configMapKeyRef:
                   name: postgres-config-map
-                  key: DB_PORT_CLIENT
+                  key: DB_PORT_CLIENTS
             - name: DB_DBNAME
               valueFrom:
                 configMapKeyRef:
