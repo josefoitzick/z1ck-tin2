@@ -80,9 +80,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: credittracking-db-service
+  name: credittrackings-db-service
   labels:
-    app: credittracking-db-service
+    app: credittrackings-db-service
     tier: database
 spec:
   ports:

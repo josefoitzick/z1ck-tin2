@@ -80,9 +80,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: credit-db-service
+  name: credits-db-service
   labels:
-    app: credit-db-service
+    app: credits-db-service
     tier: database
 spec:
   ports:

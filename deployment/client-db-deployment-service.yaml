@@ -80,9 +80,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: client-db-service
+  name: clients-db-service
   labels:
-    app: client-db-service
+    app: clients-db-service
     tier: database
 spec:
   ports:

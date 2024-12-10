@@ -80,9 +80,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: credit-request-db-service
+  name: creditrequests-db-service
   labels:
-    app: credit-request-db-service
+    app: creditrequests-db-service
     tier: database
 spec:
   ports:

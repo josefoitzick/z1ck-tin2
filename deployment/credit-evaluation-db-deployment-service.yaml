@@ -80,9 +80,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: credit-evaluation-db-service
+  name: creditevaluations-db-service
   labels:
-    app: credit-evaluation-db-service
+    app: creditevaluations-db-service
     tier: database
 spec:
   ports:
