@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-credit-evaluation-deployment
+  labels:
+    app: ms-credit-evaluation-deployment
+spec:
+  selector:
+    matchLabels:
+      app: ms-credit-evaluation-deployment
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ms-credit-evaluation-deployment
+    spec:
+      containers:
+        - name: ms-credit-evaluation
+          image: z1ckk/image-ms-credit-evaluation # Imagen creada para el microservicio credit-evaluation
+          ports:
+            - containerPort: 8093 # Puerto del microservicio
+          env:
+            - name: SERVER_PORT
+              value: "0" # Puerto dinámico
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config-map
+                  key: DB_HOST_CREDIT_EVALUATION
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config-map
+                  key: DB_PORT_CREDIT_EVALUATION
+            - name: DB_DBNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config-map
+                  key: DB_DBNAME_CREDIT_EVALUATIONS
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: DB_USER_GENERAL
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: DB_PASSWORD_GENERAL

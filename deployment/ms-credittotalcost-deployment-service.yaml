@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-credittotalcost-deployment
+  labels:
+    app: ms-credittotalcost-deployment
+spec:
+  selector:
+    matchLabels:
+      app: ms-credittotalcost-deployment
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ms-credittotalcost-deployment
+    spec:
+      containers:
+        - name: ms-credittotalcost
+          image: z1ckk/image-ms-credittotalcost # Imagen creada para el microservicio
+          ports:
+            - containerPort: 8096 # Puerto del microservicio
+          env:
+            - name: SERVER_PORT
+              value: "0" # Puerto dinámico como solicitado
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config-map
+                  key: DB_HOST_CREDITTOTALCOSTS # Host de la base de datos
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config-map
+                  key: DB_PORT_CREDITTOTALCOSTS # Puerto de la base de datos
+            - name: DB_DBNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config-map
+                  key: DB_DBNAME_CREDITTOTALCOSTS # Nombre de la base de datos
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: DB_USER_GENERAL # Usuario general
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: DB_PASSWORD_GENERAL # Contraseña general

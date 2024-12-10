@@ -1,49 +1,49 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ms-products-deployment
+  name: ms-credittracking-deployment
   labels:
-    app: ms-products-deployment
+    app: ms-credittracking-deployment
 spec:
   selector:
     matchLabels:
-      app: ms-products-deployment
+      app: ms-credittracking-deployment
   replicas: 1
   template:
     metadata:
       labels:
-        app: ms-products-deployment
+        app: ms-credittracking-deployment
     spec:
       containers:
-        - name: ms-products
-          image: polloh/ms-products
+        - name: ms-credittracking
+          image: z1ckk/image-ms-credittracking # Imagen creada para el microservicio
           ports:
-            - containerPort: 8091
+            - containerPort: 8097 # Puerto del microservicio
           env:
             - name: SERVER_PORT
-              value: "0"
+              value: "0" # Puerto dinámico como solicitado
             - name: DB_HOST
               valueFrom:
                 configMapKeyRef:
                   name: postgres-config-map
-                  key: DB_HOST_PRODUCTS
+                  key: DB_HOST_CREDITTRACKINGS # Host de la base de datos
             - name: DB_PORT
               valueFrom:
                 configMapKeyRef:
                   name: postgres-config-map
-                  key: DB_PORT_PRODUCTS
+                  key: DB_PORT_CREDITTRACKINGS # Puerto de la base de datos
             - name: DB_DBNAME
               valueFrom:
                 configMapKeyRef:
                   name: postgres-config-map
-                  key: DB_DBNAME_PRODUCTS
+                  key: DB_DBNAME_CREDITTRACKINGS # Nombre de la base de datos
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
                   name: postgres-credentials
-                  key: DB_USER_PRODUCTS
+                  key: DB_USER_GENERAL # Usuario general
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: postgres-credentials
-                  key: DB_PASSWORD_PRODUCTS
+                  key: DB_PASSWORD_GENERAL # Contraseña general

@@ -1,0 +1,95 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: credit-db-pv
+  labels:
+    type: local
+spec:
+  storageClassName: standard
+  capacity:
+    storage: 256Mi # Memoria optimizada
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/data/credit-db-data" # Ruta para almacenar la base de datos
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: credit-db-pvc
+  labels:
+    app: postgres
+    tier: database
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 256Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: credit-db-deployment
+  labels:
+    app: credit-db-deployment
+    tier: database
+spec:
+  selector:
+    matchLabels:
+      app: credit-db-deployment
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: credit-db-deployment
+        tier: database
+    spec:
+      containers:
+        - name: credit-db
+          image: postgres # Imagen oficial de PostgreSQL
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 5432 # Puerto estándar de PostgreSQL
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: DB_USER_GENERAL
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: DB_PASSWORD_GENERAL
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config-map
+                  key: DB_DBNAME_CREDITS # Base de datos específica
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: credit-db-data
+      volumes:
+        - name: credit-db-data
+          persistentVolumeClaim:
+            claimName: credit-db-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: credit-db-service
+  labels:
+    app: credit-db-service
+    tier: database
+spec:
+  ports:
+    - port: 5432
+      targetPort: 5432
+      protocol: TCP
+  selector:
+    app: credit-db-deployment
+    tier: database
+  type: LoadBalancer

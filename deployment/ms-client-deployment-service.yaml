@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-client-deployment
+  labels:
+    app: ms-client-deployment
+spec:
+  selector:
+    matchLabels:
+      app: ms-client-deployment
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ms-client-deployment
+    spec:
+      containers:
+        - name: ms-client
+          image: z1ckk/image-ms-client # Usamos la imagen creada para el microservicio client
+          ports:
+            - containerPort: 8091 # Puerto del microservicio
+          env:
+            - name: SERVER_PORT
+              value: "0"
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config-map
+                  key: DB_HOST_CLIENT
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config-map
+                  key: DB_PORT_CLIENT
+            - name: DB_DBNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config-map
+                  key: DB_DBNAME_CLIENTS
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: DB_USER_GENERAL
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: DB_PASSWORD_GENERAL

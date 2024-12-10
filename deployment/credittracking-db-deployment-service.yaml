@@ -1,0 +1,95 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: credittracking-db-pv
+  labels:
+    type: local
+spec:
+  storageClassName: standard
+  capacity:
+    storage: 256Mi # Espacio reservado para la base de datos
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/data/credittracking-db-data" # Ruta de almacenamiento local
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: credittracking-db-pvc
+  labels:
+    app: postgres
+    tier: database
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 256Mi # Espacio solicitado
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: credittracking-db-deployment
+  labels:
+    app: credittracking-db-deployment
+    tier: database
+spec:
+  selector:
+    matchLabels:
+      app: credittracking-db-deployment
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: credittracking-db-deployment
+        tier: database
+    spec:
+      containers:
+        - name: credittracking-db
+          image: postgres # Imagen oficial de PostgreSQL
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 5432 # Puerto estándar de PostgreSQL
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: DB_USER_GENERAL # Usuario general
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: DB_PASSWORD_GENERAL # Contraseña general
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config-map
+                  key: DB_DBNAME_CREDITTRACKINGS # Base de datos para ms-credittracking
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: credittracking-db-data
+      volumes:
+        - name: credittracking-db-data
+          persistentVolumeClaim:
+            claimName: credittracking-db-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: credittracking-db-service
+  labels:
+    app: credittracking-db-service
+    tier: database
+spec:
+  ports:
+    - port: 5432
+      targetPort: 5432
+      protocol: TCP
+  selector:
+    app: credittracking-db-deployment
+    tier: database
+  type: LoadBalancer

@@ -1,0 +1,95 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: client-db-pv
+  labels:
+    type: local
+spec:
+  storageClassName: standard
+  capacity:
+    storage: 256Mi # Reducimos la memoria asignada
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/data/client-db-data" # Ruta donde se almacenará la base de datos
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: client-db-pvc
+  labels:
+    app: postgres
+    tier: database
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 256Mi # Mantener consistencia con el PV
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-db-deployment
+  labels:
+    app: client-db-deployment
+    tier: database
+spec:
+  selector:
+    matchLabels:
+      app: client-db-deployment
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: client-db-deployment
+        tier: database
+    spec:
+      containers:
+        - name: client-db
+          image: postgres # Imagen oficial de PostgreSQL
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 5432 # Puerto estándar de PostgreSQL
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: DB_USER_GENERAL
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: DB_PASSWORD_GENERAL
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config-map
+                  key: DB_DBNAME_CLIENTS # Base de datos que se creará automáticamente
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: client-db-data
+      volumes:
+        - name: client-db-data
+          persistentVolumeClaim:
+            claimName: client-db-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-db-service
+  labels:
+    app: client-db-service
+    tier: database
+spec:
+  ports:
+    - port: 5432
+      targetPort: 5432
+      protocol: TCP
+  selector:
+    app: client-db-deployment
+    tier: database
+  type: LoadBalancer
