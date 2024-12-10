@@ -7,11 +7,11 @@ metadata:
 spec:
   storageClassName: standard
   capacity:
-    storage: 256Mi # Reducimos la memoria asignada
+    storage: 1Gi
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/data/client-db-data" # Ruta donde se almacenará la base de datos
+    path: "/data/client-db-data"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -26,7 +26,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 256Mi # Mantener consistencia con el PV
+      storage: 1Gi
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -49,7 +49,7 @@ spec:
     spec:
       containers:
         - name: client-db
-          image: postgres # Imagen oficial de PostgreSQL
+          image: postgres
           imagePullPolicy: "IfNotPresent"
           ports:
             - containerPort: 5432 # Puerto estándar de PostgreSQL
