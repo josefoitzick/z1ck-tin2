@@ -36,7 +36,7 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: postgres-config-map
-                  key: DB_DBNAME_CREDITSIMULATION # Nombre de la base de datos
+                  key: DB_DBNAME_CREDITSIMULATIONS # Nombre de la base de datos
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
