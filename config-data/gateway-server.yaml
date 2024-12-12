@@ -17,9 +17,20 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedOrigins: '*'
-            allowedMethods: "*"
-            allowedHeaders: "*"
+            allowedOrigins:
+              - http://http://172.20.41.119:30787/ # Dirección correcta del frontend
+            allowedMethods:
+                - GET
+                - POST
+                - PUT
+                - DELETE
+                - OPTIONS
+            allowedHeaders:
+                - Content-Type
+                - Authorization
+                - X-Requested-With
+                - Accept
+            allowCredentials: true
       routes:
         # Ruta para ms-client
         - id: ms-client
