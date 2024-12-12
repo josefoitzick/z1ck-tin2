@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/credit-simulation")
-@CrossOrigin("*")
 public class CreditSimulationController {
 
     @Autowired

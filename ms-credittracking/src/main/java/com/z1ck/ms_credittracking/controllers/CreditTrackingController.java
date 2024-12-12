@@ -11,7 +11,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/credit-tracking")
-@CrossOrigin("*")
 public class CreditTrackingController {
     @Autowired
     private CreditTrackingService creditTrackingService;

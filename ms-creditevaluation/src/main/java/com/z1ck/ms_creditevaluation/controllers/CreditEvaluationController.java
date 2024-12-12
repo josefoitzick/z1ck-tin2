@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/credit-evaluations")
-@CrossOrigin("*")
+
 public class CreditEvaluationController {
     @Autowired
     private CreditEvaluationService creditEvaluationService;

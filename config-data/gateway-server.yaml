@@ -18,7 +18,7 @@ spring:
         cors-configurations:
           '[/**]':
             allowedOrigins:
-              - http://http://172.20.41.119:30787/ # Dirección correcta del frontend
+              - http://192.168.105.200
             allowedMethods:
                 - GET
                 - POST
