@@ -18,18 +18,18 @@ spring:
         cors-configurations:
           '[/**]':
             allowedOrigins:
-              - http://192.168.105.200:31305
+              - http://http://192.168.105.200:30496/
             allowedMethods:
-                - GET
-                - POST
-                - PUT
-                - DELETE
-                - OPTIONS
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
             allowedHeaders:
-                - Content-Type
-                - Authorization
-                - X-Requested-With
-                - Accept
+              - Content-Type
+              - Authorization
+              - X-Requested-With
+              - Accept
             allowCredentials: true
       routes:
         # Ruta para ms-client
