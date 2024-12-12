@@ -8,34 +8,34 @@ data:
   # Configuración para clients-db
   DB_HOST_CLIENTS: clients-db-service
   DB_PORT_CLIENTS: "5432"
-  DB_DBNAME_CLIENTS: clients
-
-  # Configuración para creditevaluations-db
-  DB_HOST_CREDITEVALUATIONS: creditevaluations-db-service
-  DB_PORT_CREDITEVALUATIONS: "5433"
-  DB_DBNAME_CREDITEVALUATIONS: creditevaluations
-
-  # Configuración para creditrequests-db
-  DB_HOST_CREDITREQUESTS: creditrequests-db-service
-  DB_PORT_CREDITREQUESTS: "5434"
-  DB_DBNAME_CREDITREQUESTS: creditrequests
+  DB_DBNAME_CLIENTS: clients-db
 
   # Configuración para credits-db
   DB_HOST_CREDITS: credits-db-service
-  DB_PORT_CREDITS: "5435"
-  DB_DBNAME_CREDITS: credits
+  DB_PORT_CREDITS: "5433"
+  DB_DBNAME_CREDITS: credits-db
+
+  # Configuración para creditevaluations-db
+  DB_HOST_CREDITEVALUATIONS: creditevaluations-db-service
+  DB_PORT_CREDITEVALUATIONS: "5434"
+  DB_DBNAME_CREDITEVALUATIONS: creditevaluations-db
+
+  # Configuración para creditrequests-db
+  DB_HOST_CREDITREQUESTS: creditrequests-db-service
+  DB_PORT_CREDITREQUESTS: "5435"
+  DB_DBNAME_CREDITREQUESTS: creditrequests-db
 
   # Configuración para creditsimulation-db
   DB_HOST_CREDITSIMULATION: creditsimulation-db-service
   DB_PORT_CREDITSIMULATION: "5436"
-  DB_DBNAME_CREDITSIMULATION: creditsimulations
+  DB_DBNAME_CREDITSIMULATIONS: creditsimulations-db
 
   # Configuración para credittotalcosts-db
   DB_HOST_CREDITTOTALCOSTS: credittotalcosts-db-service
   DB_PORT_CREDITTOTALCOSTS: "5437"
-  DB_DBNAME_CREDITTOTALCOSTS: credittotalcosts
+  DB_DBNAME_CREDITTOTALCOSTS: credittotalcosts-db
 
   # Configuración para credittrackings-db
   DB_HOST_CREDITTRACKINGS: credittrackings-db-service
   DB_PORT_CREDITTRACKINGS: "5438"
-  DB_DBNAME_CREDITTRACKINGS: credittrackings
+  DB_DBNAME_CREDITTRACKINGS: credittrackings-db
