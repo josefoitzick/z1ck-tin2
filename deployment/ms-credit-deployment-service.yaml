@@ -41,9 +41,9 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: postgres-credentials
-                  key: DB_USER_GENERAL # Referencia global
+                  key: DB_USER_GENERAL
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: postgres-credentials
-                  key: DB_PASSWORD_GENERAL # Referencia global
+                  key: DB_PASSWORD_GENERAL
