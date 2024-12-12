@@ -18,7 +18,7 @@ spring:
         cors-configurations:
           '[/**]':
             allowedOrigins:
-              - http://192.168.105.200
+              - http://192.168.105.200:31305
             allowedMethods:
                 - GET
                 - POST
