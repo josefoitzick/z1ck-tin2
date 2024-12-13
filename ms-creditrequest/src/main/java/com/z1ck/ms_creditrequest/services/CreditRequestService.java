@@ -2,6 +2,7 @@ package com.z1ck.ms_creditrequest.services;
 
 
 import com.z1ck.ms_creditrequest.clients.CreditServiceFeignClient;
+import com.z1ck.ms_creditrequest.entities.CreditEntity;
 import com.z1ck.ms_creditrequest.entities.CreditRequestEntity;
 import com.z1ck.ms_creditrequest.repositories.CreditRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +73,15 @@ public class CreditRequestService {
 
         // Si el nuevo estado es "Aprobada", crear el crédito utilizando Feign Client
         if ("Aprobada".equals(newStatus)) {
-            creditServiceFeignClient.createCreditFromRequest(request);
+            CreditEntity credito = creditServiceFeignClient.createCreditFromRequest(request);
+            // Guardar el crédito en el repositorio de ms-credit
+            CreditEntity savedCredit = creditServiceFeignClient.saveCredit(credito);
+
+            if (savedCredit != null) {
+                System.out.println("Crédito guardado exitosamente: " + savedCredit);
+            } else {
+                throw new RuntimeException("Error al guardar el crédito en ms-credit");
+            }
         }
 
         return updatedRequest;

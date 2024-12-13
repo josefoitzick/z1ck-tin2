@@ -96,7 +96,7 @@ public class CreditService {
         // Asignar la cuota mensual calculada al crédito
         credit.setMonthlyPayment(monthlyPayment);
 
-        return creditRepository.save(credit);
+        return credit;
     }
 
     // Obtener todos los créditos de un cliente por su clientId

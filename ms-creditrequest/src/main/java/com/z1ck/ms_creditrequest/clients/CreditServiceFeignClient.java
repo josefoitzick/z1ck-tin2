@@ -2,6 +2,7 @@ package com.z1ck.ms_creditrequest.clients;
 
 
 import com.z1ck.ms_creditrequest.configurations.FeignClientConfig;
+import com.z1ck.ms_creditrequest.entities.CreditEntity;
 import com.z1ck.ms_creditrequest.entities.CreditRequestEntity;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +16,10 @@ public interface CreditServiceFeignClient {
     que es el de credit, dado que cuando se apreta aprobar se crea el credito,
     por medio del metodo creditService.createCreditFromRequest(request)
      */
-
     @PostMapping("/")
-    void createCreditFromRequest(@RequestBody CreditRequestEntity creditRequest);
+    CreditEntity createCreditFromRequest(@RequestBody CreditRequestEntity creditRequest);
+
+    // Guardar un crédito en el repositorio de ms-credit
+    @PostMapping("/")
+    CreditEntity saveCredit(@RequestBody CreditEntity credit);
 }
