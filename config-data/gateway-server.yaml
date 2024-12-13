@@ -42,7 +42,7 @@ spring:
         - id: ms-credit
           uri: lb://ms-credit
           predicates:
-            - Path=/api/v1/credit/**
+            - Path=/api/v1/credits/**
 
         # Ruta para ms-creditevaluation
         - id: ms-creditevaluation
