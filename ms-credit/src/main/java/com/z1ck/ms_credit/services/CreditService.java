@@ -53,51 +53,88 @@ public class CreditService {
 
     // Crear crédito a partir de una solicitud aprobada
     public CreditEntity createCreditFromRequest(CreditRequestEntity request) {
+        System.out.println("Inicio de creación del crédito desde la solicitud.");
+
+        // Validar que la solicitud no sea nula
+        if (request == null) {
+            System.out.println("Error: La solicitud de crédito es nula.");
+            throw new IllegalArgumentException("La solicitud de crédito no puede ser nula.");
+        }
+
+        // Imprimir detalles iniciales de la solicitud
+        System.out.println("Detalles de la solicitud recibida:");
+        System.out.println("ClientId: " + request.getClientId());
+        System.out.println("Amount: " + request.getAmount());
+        System.out.println("Term: " + request.getTerm());
+        System.out.println("CreditType: " + request.getCreditType());
+
         CreditEntity credit = new CreditEntity();
-        credit.setClientId(request.getClientId());  // Guardamos el ID del cliente
+        credit.setClientId(request.getClientId());
         credit.setAmount(request.getAmount());
         credit.setTerm(request.getTerm());
         credit.setApprovalDate(LocalDate.now());
 
+        System.out.println("Fecha de aprobación asignada: " + credit.getApprovalDate());
+
         // Asignar la tasa de interés basada en el tipo de crédito
         double interestRate;
-        switch (request.getCreditType()) {
-            case "Primera vivienda":
-                interestRate = 4.5;  // Tasa promedio para Primera Vivienda
-                break;
-            case "Segunda vivienda":
-                interestRate = 5.0;   // Tasa promedio para Segunda Vivienda
-                break;
-            case "Propiedades Comerciales":
-                interestRate = 6.0;   // Tasa promedio para Propiedades Comerciales
-                break;
-            case "Remodelación":
-                interestRate = 5.25;  // Tasa promedio para Remodelación
-                break;
-            default:
-                throw new IllegalArgumentException("Tipo de crédito no reconocido: " + request.getCreditType());
+        try {
+            switch (request.getCreditType()) {
+                case "Primera vivienda":
+                    interestRate = 4.5;
+                    break;
+                case "Segunda vivienda":
+                    interestRate = 5.0;
+                    break;
+                case "Propiedades Comerciales":
+                    interestRate = 6.0;
+                    break;
+                case "Remodelación":
+                    interestRate = 5.25;
+                    break;
+                default:
+                    System.out.println("Error: Tipo de crédito no reconocido: " + request.getCreditType());
+                    throw new IllegalArgumentException("Tipo de crédito no reconocido: " + request.getCreditType());
+            }
+        } catch (Exception e) {
+            System.out.println("Error al asignar la tasa de interés: " + e.getMessage());
+            throw e;
         }
 
         // Asignar la tasa de interés calculada
         credit.setInterestRate(interestRate);
+        System.out.println("Tasa de interés asignada: " + interestRate);
 
         // Convertir la tasa de interés anual a tasa mensual
         double monthlyInterestRate = interestRate / 12 / 100;
+        System.out.println("Tasa de interés mensual calculada: " + monthlyInterestRate);
 
-        // Obtener el monto del préstamo y el número total de pagos (número de meses)
+        // Obtener el monto del préstamo y el número total de pagos
         double loanAmount = request.getAmount();
         int termInYears = request.getTerm();
         int totalPayments = termInYears * 12;
 
+        System.out.println("Monto del préstamo: " + loanAmount);
+        System.out.println("Plazo en años: " + termInYears);
+        System.out.println("Número total de pagos: " + totalPayments);
+
         // Calcular la cuota mensual usando la fórmula de anualidad
-        double monthlyPayment = loanAmount * (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, totalPayments)) /
-                (Math.pow(1 + monthlyInterestRate, totalPayments) - 1);
+        try {
+            double monthlyPayment = loanAmount * (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, totalPayments)) /
+                    (Math.pow(1 + monthlyInterestRate, totalPayments) - 1);
 
-        // Asignar la cuota mensual calculada al crédito
-        credit.setMonthlyPayment(monthlyPayment);
+            // Asignar la cuota mensual calculada al crédito
+            credit.setMonthlyPayment(monthlyPayment);
+            System.out.println("Cuota mensual calculada: " + monthlyPayment);
+        } catch (Exception e) {
+            System.out.println("Error al calcular la cuota mensual: " + e.getMessage());
+            throw e;
+        }
 
+        System.out.println("Crédito creado exitosamente: " + credit);
         return credit;
     }
+
 
     // Obtener todos los créditos de un cliente por su clientId
     public List<CreditEntity> getCreditsByClientId(Long clientId) {

@@ -16,7 +16,9 @@ public interface CreditServiceFeignClient {
     que es el de credit, dado que cuando se apreta aprobar se crea el credito,
     por medio del metodo creditService.createCreditFromRequest(request)
      */
-    @PostMapping("/")
+
+    // Crear crédito a partir de una solicitud
+    @PostMapping("/create-from-request")
     CreditEntity createCreditFromRequest(@RequestBody CreditRequestEntity creditRequest);
 
     // Guardar un crédito en el repositorio de ms-credit

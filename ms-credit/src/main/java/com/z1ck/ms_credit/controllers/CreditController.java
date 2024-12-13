@@ -1,6 +1,7 @@
 package com.z1ck.ms_credit.controllers;
 
 import com.z1ck.ms_credit.entitites.CreditEntity;
+import com.z1ck.ms_credit.entitites.CreditRequestEntity;
 import com.z1ck.ms_credit.services.CreditService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -67,5 +68,12 @@ public class CreditController {
         List<CreditEntity> credits = creditService.getCreditsByClientId(clientId);
         return ResponseEntity.ok(credits);
     }
+
+    @PostMapping("/create-from-request")
+    public ResponseEntity<CreditEntity> createCreditFromRequest(@RequestBody CreditRequestEntity request) {
+        CreditEntity credit = creditService.createCreditFromRequest(request); // Llama al método en el servicio
+        return ResponseEntity.ok(credit); // Devuelve el crédito creado
+    }
+
 
 }
